@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración | Catalina Glossary</title>
+    <link rel="icon" href="/static/img/icon2.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Allura&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body class="admin-body">
+
+<!-- ═══════════════════════════════ HEADER ═══════════════════════════════════ -->
+<header>
+    <div class="header-content">
+        <img src="/static/img/icon2.png" alt="icon" class="icon">
+        <h1>Glosario | Catalina Glossary</h1>
+    </div>
+    <div class="sub-header">
+        <input type="search" id="Browsebar" placeholder="BUSCAR" autocomplete="off">
+        <nav class="header-nav">
+            <a href="/" class="nav-link-style">Glosario – Diccionario</a>
+            <span class="nav-sep">|</span>
+            <span class="nav-link-style active-nav">Panel De Administración</span>
+        </nav>
+    </div>
+</header>
+
+<!-- ═══════════════════════════════ MAIN ═════════════════════════════════════ -->
+<main class="admin-main">
+
+    <!-- Stats bar -->
+    <div class="admin-stats" id="adminStats">
+        <span>Items: <strong id="statItems">0</strong></span>
+        <span>Sugerencias Totales: <strong id="statSuggs">0</strong></span>
+    </div>
+
+    <!-- Table -->
+    <div class="admin-table-wrap">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Imagen</th>
+                    <th>Nombre</th>
+                    <th>Descripcion</th>
+                    <th>Método de Despacho</th>
+                    <th>Cant. por Caja</th>
+                    <th>Sugerencias</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="adminTableBody">
+                <!-- rows injected by JS -->
+            </tbody>
+        </table>
+        <div id="adminNoItems" class="no-results hidden">No hay items aún. ¡Agrega el primero!</div>
+    </div>
+
+    <div class="admin-add-wrap">
+        <button class="add-new-btn" id="openAddModal">+ Agregar Nuevo Item</button>
+    </div>
+</main>
+
+<!-- ══════════════ MODAL: AGREGAR / EDITAR ITEM ══════════════════════════════ -->
+<div class="yrz-overlay hidden" id="itemFormOverlay">
+    <div class="yrz-modal admin-item-modal">
+        <div class="admin-modal-header">
+            <span id="itemFormTitle">Nuevo Item</span>
+            <button class="sugg-btn-close" id="closeItemForm">✕</button>
+        </div>
+        <div class="admin-modal-body">
+
+            <!-- Image upload -->
+            <label class="img-upload-label" for="imgInput" id="imgUploadLabel">
+                <img id="imgPreview" src="/static/img/default.png" alt="preview" class="img-preview">
+                <span class="img-upload-hint">Click para cambiar imagen</span>
+                <input type="file" id="imgInput" accept="image/*" style="display:none">
+            </label>
+
+            <!-- Fields -->
+            <div class="admin-fields">
+                <div class="float-input">
+                    <input type="text" id="fieldNombre" class="float-field" placeholder=" " autocomplete="off">
+                    <label class="float-label">Nombre</label>
+                </div>
+                <div class="float-input">
+                    <textarea id="fieldDesc" class="float-field float-textarea" placeholder=" " rows="3"></textarea>
+                    <label class="float-label">Descripción</label>
+                </div>
+                <div class="float-input">
+                    <input type="text" id="fieldDespacho" class="float-field" placeholder=" " autocomplete="off">
+                    <label class="float-label">Método de Despacho</label>
+                </div>
+                <div class="float-input">
+                    <input type="text" id="fieldCajas" class="float-field" placeholder=" " autocomplete="off">
+                    <label class="float-label">Cantidades por Caja</label>
+                </div>
+            </div>
+        </div>
+        <div class="admin-modal-footer">
+            <p class="form-error hidden" id="itemFormError">Completa el nombre del item.</p>
+            <button class="cancel-btn" id="cancelItemForm">Cancelar</button>
+            <button class="confirm-flat-btn" id="saveItem">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════ MODAL: CONFIRMAR ELIMINAR ═════════════════════════════════ -->
+<div class="yrz-overlay hidden" id="deleteOverlay">
+    <div class="yrz-modal delete-modal">
+        <p class="delete-msg">¿Eliminar <strong id="deleteItemName"></strong>?</p>
+        <p class="delete-sub">Esta acción eliminará también todas sus sugerencias.</p>
+        <div class="delete-actions">
+            <button class="cancel-btn" id="cancelDelete">Cancelar</button>
+            <button class="danger-btn" id="confirmDelete">Eliminar</button>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════ MODAL: SUGERENCIAS DEL ITEM ═══════════════════════════════ -->
+<div class="yrz-overlay hidden" id="suggAdminOverlay">
+    <div class="yrz-modal sugg-admin-modal">
+        <div class="admin-modal-header">
+            <span>Sugerencias — <em id="suggAdminItemName"></em></span>
+            <button class="sugg-btn-close" id="closeSuggAdmin">✕</button>
+        </div>
+        <ul class="sugg-admin-list mono" id="suggAdminList"></ul>
+        <p class="no-sugg-msg hidden" id="noSuggMsg">Sin sugerencias aún.</p>
+    </div>
+</div>
+
+<script src="/static/js/admin.js"></script>
+</body>
+</html>
