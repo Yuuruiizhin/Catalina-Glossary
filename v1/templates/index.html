@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h1>Productos</h1>
+  <div class="items-grid">
+  {% for item in items %}
+    <article class="card">
+      {% if item.Imagen %}
+        <img src="/data_files/Img/Productos/{{ item.Imagen }}" alt="{{ item.Nombre }}">
+      {% else %}
+        <div class="no-image">Sin imagen</div>
+      {% endif %}
+      <div class="card-body">
+        <h3>{{ item.Nombre }}</h3>
+        <p class="desc">{{ item.Descripcion }}</p>
+        <p><strong>UID:</strong> {{ item.UID_Item }}</p>
+        <p><strong>Método:</strong> {{ item["Metodo de despacho"] }}</p>
+        <p><strong>Cant/ Caja:</strong> {{ item["Cantidades por caja"] }}</p>
+      </div>
+    </article>
+  {% else %}
+    <p>No hay items aún.</p>
+  {% endfor %}
+  </div>
+
+  <section class="suggest">
+    <h2>Enviar sugerencia de nombre</h2>
+    <form action="/suggest" method="post" class="form-suggest">
+      <label>UID Item <input name="uid_item" required></label>
+      <label>Tu nombre <input name="suggester_name" required></label>
+      <label>Nombre sugerido <input name="suggested_name" required></label>
+      <button type="submit">Enviar</button>
+    </form>
+  </section>
+{% endblock %}
