@@ -45,16 +45,16 @@ function renderTable(items) {
     items.forEach(item => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
-            <td><img class="tbl-img" src="${imgSrc(item.imagen)}" alt="${item.nombre}"
+            <td data-label="Imagen"><img class="tbl-img" src="${imgSrc(item.imagen)}" alt="${item.nombre}"
                      onerror="this.src='${DEFAULT_IMG}'"></td>
-            <td>${escHtml(item.nombre)}</td>
-            <td class="desc-cell" title="${escHtml(item.descripcion)}">${escHtml(item.descripcion)}</td>
-            <td>${escHtml(item.despacho)}</td>
-            <td>${escHtml(item.cajas)}</td>
-            <td>
+            <td data-label="Nombre">${escHtml(item.nombre)}</td>
+            <td data-label="Descripción" class="desc-cell" title="${escHtml(item.descripcion)}">${escHtml(item.descripcion)}</td>
+            <td data-label="Despacho">${escHtml(item.despacho)}</td>
+            <td data-label="Cant./Caja">${escHtml(item.cajas)}</td>
+            <td data-label="Sugerencias">
                 <span class="badge-sugg" data-uid="${item.uid_item}" title="Ver sugerencias">...</span>
             </td>
-            <td>
+            <td data-label="Acciones">
                 <div class="action-cell">
                     <button class="btn-edit"   data-uid="${item.uid_item}">Editar</button>
                     <button class="btn-delete" data-uid="${item.uid_item}" data-name="${escHtml(item.nombre)}">Eliminar</button>

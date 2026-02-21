@@ -1,22 +1,24 @@
 /* ═══════════════════════════════════════════════════════════
-   admin.css — Panel de Administración
+   admin.css — Panel de Administración (responsive)
 ═══════════════════════════════════════════════════════════ */
 
 .admin-body { background: var(--bg); }
 
-.admin-main { padding: 24px 28px; }
+.admin-main { padding: 16px 14px; }
 
 /* ─── STATS ─────────────────────────────────────────────── */
 .admin-stats {
-    display: flex; gap: 32px;
-    font-size: .9rem; color: #aa7777;
-    margin-bottom: 16px;
+    display: flex; gap: 20px; flex-wrap: wrap;
+    font-size: clamp(.78rem, 2.5vw, .9rem);
+    color: #aa7777;
+    margin-bottom: 14px;
 }
 .admin-stats strong { color: var(--text); }
 
-/* ─── TABLE ─────────────────────────────────────────────── */
+/* ─── TABLE WRAPPER ─────────────────────────────────────── */
 .admin-table-wrap {
-    overflow-x: auto;
+    overflow-x: auto;          /* scroll horizontal si la tabla no entra */
+    -webkit-overflow-scrolling: touch;
     border: 1px solid var(--border);
     border-radius: 10px;
     box-shadow: 0 4px 20px rgba(0,0,0,.4);
@@ -24,11 +26,12 @@
 
 .admin-table {
     width: 100%; border-collapse: collapse;
-    font-size: .88rem;
+    font-size: clamp(.76rem, 2vw, .88rem);
+    min-width: 520px;          /* tabla nunca se apachurra más de esto */
 }
 .admin-table thead { background: var(--maroon); }
 .admin-table th {
-    padding: 14px 16px;
+    padding: 12px 12px;
     text-align: left;
     font-family: 'Courier Prime', monospace;
     font-weight: 700;
@@ -42,25 +45,83 @@
 }
 .admin-table tbody tr:hover { background: #1e0000; }
 .admin-table td {
-    padding: 10px 16px;
+    padding: 8px 12px;
     color: var(--mono);
     vertical-align: middle;
     font-family: 'Courier Prime', monospace;
 }
 
 .tbl-img {
-    width: 52px; height: 52px;
+    width: 46px; height: 46px;
     object-fit: cover;
     border-radius: 6px;
     border: 1px solid var(--border);
     background: #1a0000;
+    display: block;
 }
 
 .desc-cell {
-    max-width: 220px;
+    max-width: 180px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+/* ─── MOBILE CARD VIEW ──────────────────────────────────── */
+/*  En pantallas < 600px reemplazamos la tabla por cards
+    usando un truco de CSS: ocultamos thead y convertimos
+    cada <tr> en un bloque tipo card.                       */
+@media (max-width: 599px) {
+    .admin-table-wrap {
+        border: none;
+        box-shadow: none;
+        background: transparent;
+    }
+    .admin-table,
+    .admin-table thead,
+    .admin-table tbody,
+    .admin-table tr,
+    .admin-table td {
+        display: block;
+        width: 100%;
+    }
+    .admin-table thead { display: none; }    /* ocultar cabecera */
+    .admin-table { min-width: 0; }
+
+    .admin-table tbody tr {
+        background: var(--maroon);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        margin-bottom: 12px;
+        padding: 10px 12px;
+        position: relative;
+    }
+    .admin-table tbody tr:hover { background: var(--maroon); }
+
+    /* Etiqueta simulada antes de cada celda */
+    .admin-table td::before {
+        content: attr(data-label);
+        display: block;
+        font-size: .65rem;
+        color: #aa6666;
+        text-transform: uppercase;
+        letter-spacing: .07em;
+        margin-bottom: 2px;
+    }
+    .admin-table td { padding: 6px 0; border: none; }
+
+    /* Imagen arriba a la derecha en móvil */
+    .admin-table td:first-child {
+        position: absolute; top: 10px; right: 12px;
+    }
+    .tbl-img { width: 54px; height: 54px; }
+
+    .desc-cell { max-width: 100%; white-space: normal; }
+
+    .action-cell { flex-wrap: wrap; gap: 6px; padding-top: 6px; }
+    .btn-edit, .btn-delete, .btn-sugg {
+        flex: 1; min-width: 70px; text-align: center; padding: 8px 6px;
+    }
 }
 
 /* ─── ACTION BUTTONS ────────────────────────────────────── */
@@ -68,9 +129,11 @@
 
 .btn-edit, .btn-delete, .btn-sugg {
     border: none; border-radius: 6px;
-    padding: 6px 12px; font-size: .8rem;
+    padding: 6px 10px;
+    font-size: clamp(.72rem, 2vw, .8rem);
     cursor: pointer; font-family: 'Courier Prime', monospace;
     transition: filter .15s;
+    touch-action: manipulation;
 }
 .btn-edit   { background: #3b5bdb; color: #fff; }
 .btn-edit:hover   { filter: brightness(1.25); }
@@ -81,29 +144,32 @@
 
 .badge-sugg {
     display: inline-block;
-    min-width: 22px; height: 22px;
+    min-width: 24px; height: 24px;
     background: var(--maroon-l);
-    border-radius: 11px;
-    text-align: center; line-height: 22px;
+    border-radius: 12px;
+    text-align: center; line-height: 24px;
     font-size: .78rem; color: var(--text);
     cursor: pointer;
+    padding: 0 4px;
     transition: background .15s;
 }
 .badge-sugg:hover { background: var(--red); }
 
 /* ─── ADD WRAP ──────────────────────────────────────────── */
-.admin-add-wrap { margin-top: 20px; text-align: center; }
+.admin-add-wrap { margin-top: 18px; text-align: center; }
 
 .add-new-btn {
     background: var(--maroon-l);
     color: var(--text);
     border: 1px solid var(--border);
-    padding: 12px 36px;
+    padding: 12px 28px;
     border-radius: 8px;
     font-family: 'Courier Prime', monospace;
-    font-size: 1rem;
+    font-size: clamp(.88rem, 3vw, 1rem);
     cursor: pointer;
     transition: background .2s, box-shadow .2s;
+    touch-action: manipulation;
+    width: 100%; max-width: 360px;
 }
 .add-new-btn:hover {
     background: var(--maroon);
@@ -112,63 +178,79 @@
 
 /* ─── ADMIN ITEM MODAL ──────────────────────────────────── */
 .admin-item-modal {
-    width: min(660px, 96vw);
-    max-height: 88vh;
+    max-width: 640px;
+    max-height: 90vh;
 }
 .admin-modal-header {
     display: flex; align-items: center;
-    padding: 14px 20px;
+    padding: 12px 16px;
     background: var(--maroon);
     border-bottom: 1px solid var(--border);
-    font-size: 1rem; font-weight: 700;
-    gap: 12px;
+    font-size: clamp(.88rem, 3vw, 1rem);
+    font-weight: 700;
+    gap: 10px;
+    flex-shrink: 0;
 }
-.admin-modal-header span { flex: 1; }
+.admin-modal-header span { flex: 1; min-width: 0; }
 
 .admin-modal-body {
-    padding: 22px 24px;
-    display: flex; gap: 22px;
+    padding: 18px 16px;
+    display: flex; gap: 18px;
     overflow-y: auto;
+    flex-wrap: wrap;           /* imagen baja si no hay espacio */
 }
 
-/* Image upload area */
+/* Image upload */
 .img-upload-label {
     flex-shrink: 0;
-    width: 160px;
+    width: 150px;
     display: flex; flex-direction: column;
     align-items: center; gap: 8px;
     cursor: pointer;
     border: 2px dashed var(--border);
     border-radius: 10px;
-    padding: 12px 8px;
+    padding: 10px 8px;
     transition: border-color .2s;
     text-align: center;
+    touch-action: manipulation;
 }
 .img-upload-label:hover { border-color: var(--red); }
 .img-preview {
-    width: 130px; height: 130px;
+    width: 120px; height: 120px;
     object-fit: cover;
     border-radius: 6px;
     background: #1a0000;
 }
-.img-upload-hint { font-size: .72rem; color: #9e6e6e; }
+.img-upload-hint { font-size: .7rem; color: #9e6e6e; }
 
-.admin-fields { flex: 1; display: flex; flex-direction: column; gap: 16px; }
+.admin-fields { flex: 1; min-width: 180px; display: flex; flex-direction: column; gap: 14px; }
+
+/* En móvil: imagen ocupa todo el ancho */
+@media (max-width: 420px) {
+    .admin-modal-body { flex-direction: column; align-items: center; }
+    .img-upload-label { width: 100%; flex-direction: row; justify-content: flex-start; padding: 10px 14px; }
+    .img-preview { width: 80px; height: 80px; }
+    .img-upload-hint { flex: 1; text-align: left; }
+    .admin-fields { width: 100%; }
+}
 
 .admin-modal-footer {
-    padding: 14px 22px;
+    padding: 12px 16px;
     display: flex; align-items: center; justify-content: flex-end;
-    gap: 10px;
+    gap: 10px; flex-wrap: wrap;
     border-top: 1px solid var(--border);
     background: #180000;
+    flex-shrink: 0;
 }
 
 .cancel-btn {
     background: #3a3a3a; color: var(--text);
     border: none; border-radius: 7px;
-    padding: 9px 22px;
-    font-family: 'Courier Prime', monospace; font-size: .9rem;
+    padding: 9px 20px;
+    font-family: 'Courier Prime', monospace;
+    font-size: clamp(.82rem, 2.5vw, .9rem);
     cursor: pointer; transition: filter .15s;
+    touch-action: manipulation;
 }
 .cancel-btn:hover { filter: brightness(1.3); }
 
@@ -176,39 +258,43 @@
     background: var(--red); color: #fff;
     border: none; border-radius: 7px;
     padding: 9px 24px;
-    font-family: 'Courier Prime', monospace; font-size: .9rem;
+    font-family: 'Courier Prime', monospace;
+    font-size: clamp(.82rem, 2.5vw, .9rem);
     cursor: pointer; transition: filter .15s;
+    touch-action: manipulation;
 }
 .confirm-flat-btn:hover { filter: brightness(1.2); }
 
-.form-error { color: #ff6b6b; font-size: .8rem; margin: 0; flex: 1; }
+.form-error { color: #ff6b6b; font-size: .78rem; margin: 0; flex: 1 0 100%; order: -1; }
 
 /* ─── DELETE MODAL ──────────────────────────────────────── */
 .delete-modal {
-    width: min(380px, 90vw);
-    padding: 30px 28px;
+    max-width: 360px;
+    padding: 28px 22px;
     text-align: center; gap: 10px;
 }
-.delete-msg { font-size: 1.05rem; color: var(--text); margin-bottom: 6px; }
+.delete-msg { font-size: clamp(.9rem, 3vw, 1.05rem); color: var(--text); margin-bottom: 6px; }
 .delete-sub { font-size: .82rem; color: #9e6e6e; margin-bottom: 18px; }
-.delete-actions { display: flex; gap: 12px; justify-content: center; }
+.delete-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 .danger-btn {
     background: var(--red); color: #fff;
-    border: none; border-radius: 7px; padding: 9px 26px;
-    font-family: 'Courier Prime', monospace; font-size: .9rem;
+    border: none; border-radius: 7px; padding: 9px 24px;
+    font-family: 'Courier Prime', monospace;
+    font-size: clamp(.82rem, 2.5vw, .9rem);
     cursor: pointer; transition: filter .15s;
+    touch-action: manipulation;
 }
 .danger-btn:hover { filter: brightness(1.2); }
 
 /* ─── SUGG ADMIN MODAL ──────────────────────────────────── */
 .sugg-admin-modal {
-    width: min(480px, 92vw);
-    max-height: 70vh;
+    max-width: 460px;
+    max-height: 72vh;
 }
 .sugg-admin-list {
     list-style: none;
     overflow-y: auto;
-    padding: 14px 18px;
+    padding: 12px 14px;
     display: flex; flex-direction: column; gap: 8px;
     flex: 1;
 }
@@ -217,16 +303,19 @@
     background: #2a0000;
     border: 1px solid var(--border);
     border-radius: 6px;
-    padding: 8px 12px;
-    font-size: .87rem;
+    padding: 8px 10px;
+    font-size: clamp(.76rem, 2.5vw, .87rem);
     color: var(--mono);
     gap: 10px;
+    word-break: break-word;
 }
 .sugg-del-btn {
     background: none; border: none;
     color: var(--red); cursor: pointer;
     font-size: 1rem; flex-shrink: 0;
     transition: color .15s;
+    padding: 4px;
+    touch-action: manipulation;
 }
 .sugg-del-btn:hover { color: #ff4444; }
 .no-sugg-msg { padding: 16px; color: #7a4444; font-style: italic; text-align: center; }
